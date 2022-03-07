@@ -53,7 +53,7 @@ class Munger(QMainWindow):
         self.combo.currentTextChanged.connect(self.onActivated)
         
         # QLabel(여러가지 경제지표)
-        # Dollar Index
+        # Dollar Index (where)
         label1 = QLabel('Dollar Index: ', self)   # 텍스트에 함수넣어서 제시
         label1.setAlignment(Qt.AlignCenter)
         label1.move(10, 20)
