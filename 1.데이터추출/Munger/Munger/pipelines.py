@@ -6,8 +6,53 @@
 
 # useful for handling different item types with a single interface
 from itemadapter import ItemAdapter
-
+from pymongo import MongoClient
+import MySQLdb
 
 class MungerPipeline:
     def process_item(self, item, spider):
         return item
+
+class MySQLPipeline(object):
+    """
+    Item을 MySQL에 저장하는 Pipeline
+    """
+
+    def open_spider(self, spider):
+        """
+        Spider를 시작할 때, MySQL서버에 접속합니다.
+        items 테이블이 존재하지 않으면 생성합니다.
+        """
+        # settings.py 설정을 읽어 들입니다.
+        settings = spider.settings
+        params={
+            'host' : settings.get('MYSQL_HOST', 'localhost'),
+            'db' : settings.get('MYSQL_DATABASE', 'scraping'),
+            'user' : settings.get('MYSQL_USER', ''),
+            'passwd':settings.get('MYSQL_PASSWORD', ''),
+            'charset':settings.get('MYSQL_CHARSET', 'utfmb4'),
+        }
+
+        # MySQL 서버에 접속합니다.
+        self.conn = MySQLdb.connect(**params)
+        # 커서를 추출합니다.
+        self.c = self.conn.cursor()
+        # items 테이블이 존재하지 않으면 생성합니다.
+        self.c.execute()
+        # 변경을 커밋합니다.
+        self.conn.commit()
+    
+    def close_spider(self, spider):
+        """
+        Spider가 종료될때 MySQL서버와의 접속을 끊습니다.
+        """
+        self.conn.close()
+    
+    def process_item(self, item, spider):
+        """
+        Item을 items 테이블에 삽입합니다.
+        """
+        self.c.execute('INSERT INTO items (title) VALUES (%(title)s)', dict(item))
+        self.conn.commit()
+        return item
+

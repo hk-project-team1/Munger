@@ -125,12 +125,12 @@ class ScrapyWithSeleniumDownloaderMiddleware:
 
     def spider_opened(self, spider):
         dirPath = os.path.dirname(os.path.realpath(__file__))
-        CHROMEDRIVER_PATH = os.path.join(dirPath, r'..\webdriver\chromedriver_win32_97\chromedriver.exe')
+        CHROMEDRIVER_PATH = os.path.join(dirPath, r'..\webdriver\chromedriver_win32_99\chromedriver.exe')
         WINDOW_SIZE = "1920,1080"
         serviceObject = webdriver.chrome.service.Service(CHROMEDRIVER_PATH)
         
         chrome_options = Options()
-        chrome_options.add_argument("--headless")
+        # chrome_options.add_argument("--headless")
         chrome_options.add_argument("--no-sandbox")
         chrome_options.add_argument("--disable-gpu")
         chrome_options.add_argument(f"--window-size={WINDOW_SIZE}")

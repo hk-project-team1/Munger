@@ -20,6 +20,7 @@ class MungerSpider(scrapy.Spider):
         links = list(map(response.urljoin, links))
         for link in links:
             yield scrapy.Request(link, callback=self.page_parse)     
+    
     def page_parse(self, response):
         item =MungerItem()
         title1 = response.xpath('//*[@id="contents"]/div[1]/div[1]/div[2]/div[1]/font/text()').extract()
