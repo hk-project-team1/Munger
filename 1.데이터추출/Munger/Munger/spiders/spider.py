@@ -1,3 +1,4 @@
+from this import d
 import scrapy
 from Munger.items import MungerItem
 
@@ -15,9 +16,10 @@ class MungerSpider(scrapy.Spider):
         url = "http://playnomore.co.kr/category/bag/24/"
         yield scrapy.Request(url, callback=self.parse)
 
-    def parse(self, response):
+    async def parse(self, response):
         links = response.xpath('//*[@id="contents"]/div[2]/div/ul/li/div/a/@href').extract()
         links = list(map(response.urljoin, links))
+        additional_response = await deferred_to_future(links)
         for link in links:
             yield scrapy.Request(link, callback=self.page_parse)     
     
