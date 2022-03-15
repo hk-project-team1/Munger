@@ -5,11 +5,14 @@
 
 import scrapy
 
-class MungerItem(scrapy.Item):
+class TitleNewsItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
     title = scrapy.Field()
-    price = scrapy.Field()
-    img = scrapy.Field()
+    date = scrapy.Field()
+    id = scrapy.Field()
     link = scrapy.Field()
     
+class BodyItem(scrapy.Item):
+    date = scrapy.Field()
+    body = scrapy.Field()
